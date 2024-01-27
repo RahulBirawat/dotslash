@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        .main{
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            min-height: 100vh;
+        }
+        .left{
+            width:30%;
+            background-image: linear-gradient(#0091c2fb,#00b39b);
+            /* background-color: #0086b3; */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap:36px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-height: 100vh;
+        }
+        .right{
+            position: absolute;
+            right: 0;    
+            width: 70%;
+            background-color:#ffffff;
+            border-radius: 10px;
+            align-items: center;
+            padding: 5%;
+        }
+        h1{
+            color: #0086b3;
+            font-size: 30px;
+            font-weight: bold;
+        }
+        input[type=submit]{
+            background-image: linear-gradient(40deg,#0091c2fb,#00b39b);
+            border: 2px;
+            color: white;
+            padding: 8px 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            border-radius: 12px;
+        }
+        .right td{
+            padding: 10px;
+        }
+
+        /* Side Nav styling */
+        .navBtn{
+            border-radius: 18px;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            width: 250px;
+            transition: ease-in 1s;
+        }
+        a{
+            text-decoration: none;
+            color: #0086b3;
+
+        }
+        input{
+            padding: 10px 20px;
+            border-radius: 24px;
+            border: 0;
+            border-bottom: 2px solid #0086b3;
+            border-right: 1px solid #0086b3;
+            background-color: rgba(226, 241, 255, 0.671);
+            transition: ease-in ;
+            transition-duration: 200ms;
+            
+        }
+        input:focus{
+            border: 2px solid #0086b3;
+            
+            outline: none;
+            transform: scale(1.05);
+            
+        }
+        #active{
+            background-color: #00a3c3;
+            border: 2px solid white;
+        }
+        #active a{
+            color:white;
+        }
+        #submitBtn:hover{
+            transform: scale(1.1);
+        }
+        .modal{
+            padding: 1em;
+            max-width: 50ch;
+            margin: auto;
+            & > *{
+                margin: 0 0 0.5rem 0;
+            }
+        }
+        .modal::backdrop{
+            background:linear-gradient(#005e7d95,#000000b9);
+            opacity: 0.6;
+        }
+        
+    </style>
+    <title>Diabetes Predict</title>
+</head>
+<body >
+    <div class="main">
+        <div align="center" class="left">
+            <div class="navBtn"  id="active">
+                <a href=".././predict">
+                    <div>Diabetes prediction</div>
+                </a>
+            </div>
+            <div class="navBtn" >
+                <a href=".././predict_1">
+                    <div>Heart Disease prediction</div>
+                </a>
+            </div>
+            <div class="navBtn">
+                <a href=".././predict_2">
+                    <div>Lung Cancer prediction</div>
+                </a>
+            </div>
+        </div>
+        <div align="center" class="right">
+            <h1 style="font-size: 36px;margin-bottom: 24px;">Please enter the following information:</h1>
+            <form action="result">
+                <table style="font-weight: 700;font-size: 18px;">
+                    <tr>
+                        <td align="right">Pregnancies: </td>
+                        <td align="left"><input type="text" name="n1" id="n1"></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Glucose: </td>
+                        <td align="left"><input type="text" name="n2" id="n2"></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Blood Pressure: </td>
+                        <td align="left"><input type="text" name="n3" id="n3"></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Skin Thickness: </td>
+                        <td align="left"><input type="text" name="n4" id="n4"></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Insulin: </td>
+                        <td align="left"><input type="text" name="n5" id="n5"></td>
+                    </tr>
+                    <tr>
+                        <td align="right">BMI: </td>
+                        <td align="left"><input type="text" name="n6" id="n6"></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Diabetes Pedigree function: </td>
+                        <td align="left"><input type="text" name="n7" id="n7"></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Age: </td>
+                        <td align="left"><input type="text" name="n8" id="n8"></td>
+                    </tr>
+                </table>
+                <input type="submit" value="Submit" style="font-size: 20px;" id="submitBtn">
+            </form>
+            <br>
+            Result: <span id="res"> {{result2}}</span>
+            
+        </div>
+
+        
+    </div>
+
+    <dialog class="posi modal">
+        posi Lorem ipsum dolor sit amet consectetur, adipisicing elit. Possimus, labore.
+    </dialog>
+    <dialog class="negi modal">
+        negi Lorem ipsum dolor sit amet consectetur, adipisicing elit. Possimus, labore.
+    </dilog>
+    <script>
+        let res = document.getElementById('res').innerText;
+        console.log(res);
+        posi = document.querySelector('.posi')
+        negi = document.querySelector('.negi')
+        if(res == 'Positive'){
+            console.log('pos');
+            posi.showModal()
+            
+        }else if(res == 'Negative'){
+            console.log('neg');
+            negi.style.display = "block"
+        }
+    </script>
+    
+</body>
+</html>
