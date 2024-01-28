@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Recommender</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        body{
+            background-image: linear-gradient(#0092c246,#00b39b48),url('https://img.freepik.com/free-vector/clean-medical-background_53876-97927.jpg?size=626&ext=jpg&ga=GA1.1.1505290779.1706392770&semt=ais');
+            background-position:center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-size: cover;
+            min-height: 75vh;
+            overflow-x: hidden;
+        }
+        .main{
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            min-height: 100vh;
+        }
+        .left{
+            width:30%;
+            background-image: linear-gradient(#0092c246,#00b39b48);
+            /* background-color: #0086b3; */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap:36px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-height: 100vh;
+        }
+        .right{
+            position: absolute;
+            right: 0;    
+            width: 70%;
+            background-color:#ffffffa1;
+            border-radius: 10px;
+            
+            padding: 5%;
+            min-height: 100vh;
+        }
+        h1{
+            color: #0086b3;
+            font-size: 30px;
+            font-weight: bold;
+        }
+        input[type=submit]{
+            background-image: linear-gradient(40deg,#0091c2fb,#00b39b);
+            border: 2px;
+            color: white;
+            padding: 8px 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            border-radius: 12px;
+        }
+        .right td{
+            padding: 10px;
+        }
+
+        /* Side Nav styling */
+        .navBtn{
+            border-radius: 18px;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            width: 250px;
+            transition: ease-in 1s;
+        }
+        a{
+            text-decoration: none;
+            color: #0086b3;
+
+        }
+        input{
+            padding: 10px 20px;
+            border-radius: 24px;
+            border: 0;
+            border-bottom: 2px solid #0086b3;
+            border-right: 1px solid #0086b3;
+            background-color: rgba(226, 241, 255, 0.671);
+            transition: ease-in ;
+            transition-duration: 200ms;
+            
+        }
+        input:focus{
+            border: 2px solid #0086b3;
+            
+            outline: none;
+            transform: scale(1.05);
+            
+        }
+        #active{
+            background-color: #00a3c3;
+            border: 2px solid white;
+        }
+        #active a{
+            color:white;
+        }
+        #submitBtn:hover{
+            transform: scale(1.1);
+        }
+        .modal{
+            padding: 3em 5em;
+            max-width: 100ch;
+            border: 0;
+            border-radius: 24px;
+            line-height: 28px;
+            margin: auto;
+            box-shadow:  10px 10px 20px #00584c,
+             -10px -10px 20px #004856;
+            & > *{
+                margin: 0 0 0.5rem 0;
+            }
+        }
+        .modal::backdrop{
+            background:linear-gradient(#005e7d95,#000000b9);
+            opacity: 0.6;
+        }
+        .hiddenEle{
+            opacity:0;
+            transform:translateX(50%);
+            transition: all 1s;
+            transition-delay: 50ms;
+        }
+        .showEle{
+            opacity:1;
+            transform:translateX(0);
+        }
+        input{
+            padding: 10px 20px;
+            border-radius: 24px;
+            border: 0;
+            border-bottom: 2px solid #0086b3;
+            border-right: 1px solid #0086b3;
+            background-color: rgba(226, 241, 255, 0.671);
+            transition: ease-in ;
+            transition-duration: 200ms;
+            
+        }
+        input:focus{
+            border: 2px solid #0086b3;
+            
+            outline: none;
+            transform: scale(1.05);
+            
+        }
+        .doctor-table{
+            width: 100vw;
+            border-collapse: collapse;
+        }
+        .doctor-table th, .doctor-table td{
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #DDD;
+        }
+        .doctor-table tr:hover {background-color: #acf1e8;}
+
+    </style>
+</head>
+<body >
+    <div class="main">
+        <div align="center" class="left">
+            <div class="navBtn">
+                <a href="../">
+                    <div>Home</div>
+                </a>
+            </div>
+            <div class="navBtn"  >
+                <a href=".././predict">
+                    <div>Diabetes prediction</div>
+                </a>
+            </div>
+            <div class="navBtn" >
+                <a href=".././predict_1">
+                    <div>Heart Disease prediction</div>
+                </a>
+            </div>
+            <div class="navBtn">
+                <a href=".././predict_2">
+                    <div>Lung Cancer prediction</div>
+                </a>
+            </div>
+            <div class="navBtn" id="active">
+                <a href=".././form">
+                    <div>Doctor Recommendation</div>
+                </a>
+            </div>
+            
+        </div>
+        <div align="center" class="right hiddenEle">
+            <h1 style="text-align:center;color: #0086b3;">Doctor Recommender</h1>
+    <form id="doctorForm">
+        <table style="width: 50vw;text-align: center;margin: auto;border-spacing: 12px;font-size: 17px;">
+            <tr>
+                <td>
+                    <label for="location">Location:</label>
+                </td>
+                <td>
+                    <input type="text" id="location" name="location">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="specialization">Specialization:</label>
+                </td>
+                <td>
+                    <input type="text" id="specialization" name="specialization">
+                </td>
+            </tr>
+        </table>
+        
+        <div style="width: 250px; margin:30px auto;">
+        <button type="button" onclick="solve()" style="padding: 8px 16px ;font-size: 18px;border-radius: 12px;background-color: #0095b3;color: aliceblue;border:0">Get Recommendations</button>
+    </div>
+    </form>
+    
+    <div id="doctorsDiv">
+        <!-- Filtered doctors will be displayed here -->
+    </div>
+        </div>
+
+        
+    </div>
+
+    
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            console.log(entry)
+            if(entry.isIntersecting){
+                entry.target.classList.add('showEle');
+            }
+            else{
+                entry.target.classList.remove('showEle');
+            }
+            
+            })
+        })
+
+        const hiddenElements= document.querySelectorAll('.hiddenEle');
+        hiddenElements.forEach((el) => observer.observe(el));
+
+
+
+
+
+
+
+
+
+
+const arr = [
+    {
+        "name": "Dr. Rajesh Patel",
+        "specialization": "Cardiologist",
+        "location": "Surat",
+        "address": "123, Main Street, Surat, India",
+        "phone": "+91-98765-43210"
+    },
+    {
+        "name": "Dr. Priya Sharma",
+        "specialization": "Dermatologist",
+        "location": "Indore",
+        "address": "456, Park Avenue, Indore, India",
+        "phone": "+91-98765-43211"
+    },
+    {
+        "name": "Dr. Sameer Singh",
+        "specialization": "Pediatrician",
+        "location": "Jaipur",
+        "address": "789, Central Road, Jaipur, India",
+        "phone": "+91-98765-43212"
+    },
+    {
+        "name": "Dr. Neha Gupta",
+        "specialization": "Gynecologist",
+        "location": "Surat",
+        "address": "321, Garden Lane, Surat, India",
+        "phone": "+91-98765-43213"
+    },
+    {
+        "name": "Dr. Anil Kumar",
+        "specialization": "Orthopedic Surgeon",
+        "location": "Indore",
+        "address": "987, Oak Street, Indore, India",
+        "phone": "+91-98765-43214"
+    },
+    {
+        "name": "Dr. Rohan Verma",
+        "specialization": "Neurologist",
+        "location": "Jaipur",
+        "address": "654, Pine Avenue, Jaipur, India",
+        "phone": "+91-98765-43215"
+    },
+    {
+        "name": "Dr. Nisha Shah",
+        "specialization": "Ophthalmologist",
+        "location": "Surat",
+        "address": "101, Sunset Boulevard, Surat, India",
+        "phone": "+91-98765-43216"
+    },
+    {
+        "name": "Dr. Ravi Patel",
+        "specialization": "ENT Specialist",
+        "location": "Indore",
+        "address": "234, River Road, Indore, India",
+        "phone": "+91-98765-43217"
+    },
+    {
+        "name": "Dr. Sunita Mehta",
+        "specialization": "Psychiatrist",
+        "location": "Jaipur",
+        "address": "789, Moonlight Avenue, Jaipur, India",
+        "phone": "+91-98765-43218"
+    },
+    {
+        "name": "Dr. Alok Desai",
+        "specialization": "Endocrinologist",
+        "location": "Surat",
+        "address": "432, Mountain View, Surat, India",
+        "phone": "+91-98765-43219"
+    },
+    {
+        "name": "Dr. Pooja Tiwari",
+        "specialization": "Allergist",
+        "location": "Indore",
+        "address": "567, Sunflower Street, Indore, India",
+        "phone": "+91-98765-43220"
+    },
+    {
+        "name": "Dr. Anuj Gupta",
+        "specialization": "Urologist",
+        "location": "Jaipur",
+        "address": "876, Maple Drive, Jaipur, India",
+        "phone": "+91-98765-43221"
+    },
+    {
+        "name": "Dr. Reena Singh",
+        "specialization": "Rheumatologist",
+        "location": "Surat",
+        "address": "345, Spring Street, Surat, India",
+        "phone": "+91-98765-43222"
+    },
+    {
+        "name": "Dr. Tarun Sharma",
+        "specialization": "Oncologist",
+        "location": "Indore",
+        "address": "789, Forest Road, Indore, India",
+        "phone": "+91-98765-43223"
+    },
+    {
+        "name": "Dr. Sneha Patel",
+        "specialization": "Hematologist",
+        "location": "Jaipur",
+        "address": "987, Oak Street, Jaipur, India",
+        "phone": "+91-98765-43224"
+    },
+    {
+        "name": "Dr. Vikram Gupta",
+        "specialization": "Radiologist",
+        "location": "Surat",
+        "address": "234, River Road, Surat, India",
+        "phone": "+91-98765-43225"
+    },
+    {
+        "name": "Dr. Kavita Jain",
+        "specialization": "Pulmonologist",
+        "location": "Indore",
+        "address": "101, Sunset Boulevard, Indore, India",
+        "phone": "+91-98765-43226"
+    },
+    {
+        "name": "Dr. Rakesh Desai",
+        "specialization": "Nephrologist",
+        "location": "Jaipur",
+        "address": "432, Mountain View, Jaipur, India",
+        "phone": "+91-98765-43227"
+    },
+    {
+        "name": "Dr. Meena Shah",
+        "specialization": "Dentist",
+        "location": "Surat",
+        "address": "567, Sunflower Street, Surat, India",
+        "phone": "+91-98765-43228"
+    },
+    {
+        "name": "Dr. Amit Kumar",
+        "specialization": "Gastroenterologist",
+        "location": "Indore",
+        "address": "876, Maple Drive, Indore, India",
+        "phone": "+91-98765-43229"
+    },
+    {
+        "name": "Dr. Seema Sharma",
+        "specialization": "Otolaryngologist",
+        "location": "Jaipur",
+        "address": "345, Spring Street, Jaipur, India",
+        "phone": "+91-98765-43230"
+    },
+    {
+        "name": "Dr. Prakash Patel",
+        "specialization": "Neonatologist",
+        "location": "Surat",
+        "address": "789, Forest Road, Surat, India",
+        "phone": "+91-98765-43231"
+    },
+    {
+        "name": "Dr. Preeti Singh",
+        "specialization": "Immunologist",
+        "location": "Indore",
+        "address": "987, Oak Street, Indore, India",
+        "phone": "+91-98765-43232"
+    },
+    {
+        "name": "Dr. Mohan Gupta",
+        "specialization": "Oncologist",
+        "location": "Jaipur",
+        "address": "234, River Road, Jaipur, India",
+        "phone": "+91-98765-43233"
+    },
+    {
+        "name": "Dr. Anu Sharma",
+        "specialization": "Radiologist",
+        "location": "Surat",
+        "address": "101, Sunset Boulevard, Surat, India",
+        "phone": "+91-98765-43234"
+    },
+    {
+        "name": "Dr. Rahul Desai",
+        "specialization": "Pulmonologist",
+        "location": "Indore",
+        "address": "432, Mountain View, Indore, India",
+        "phone": "+91-98765-43235"
+    },
+    {
+        "name": "Dr. Neha Mehta",
+        "specialization": "Nephrologist",
+        "location": "Jaipur",
+        "address": "567, Sunflower Street, Jaipur, India",
+        "phone": "+91-98765-43236"
+    },
+    {
+        "name": "Dr. Vikas Jain",
+        "specialization": "Dentist",
+        "location": "Surat",
+        "address": "876, Maple Drive, Surat, India",
+        "phone": "+91-98765-43237"
+    },
+    {
+        "name": "Dr. Ritu Gupta",
+        "specialization": "Gastroenterologist",
+        "location": "Indore",
+        "address": "345, Spring Street, Indore, India",
+        "phone": "+91-98765-43238"
+    },
+    {
+        "name": "Dr. Sanjay Patel",
+        "specialization": "Otolaryngologist",
+        "location": "Jaipur",
+        "address": "789, Forest Road, Jaipur, India",
+        "phone": "+91-98765-43239"
+    },
+    {
+        "name": "Dr. Vandana Sharma",
+        "specialization": "Neonatologist",
+        "location": "Surat",
+        "address": "987, Oak Street, Surat, India",
+        "phone": "+91-98765-43240"
+    },
+    {
+        "name": "Dr. Karan Singh",
+        "specialization": "Immunologist",
+        "location": "Indore",
+        "address": "234, River Road, Indore, India",
+        "phone": "+91-98765-43241"
+    },
+    {
+        "name": "Dr. Simran Gupta",
+        "specialization": "Oncologist",
+        "location": "Jaipur",
+        "address": "101, Sunset Boulevard, Jaipur, India",
+        "phone": "+91-98765-43242"
+    },
+    {
+        "name": "Dr. Amita Sharma",
+        "specialization": "Radiologist",
+        "location": "Surat",
+        "address": "432, Mountain View, Surat, India",
+        "phone": "+91-98765-43243"
+    },
+    {
+        "name": "Dr. Anand Desai",
+        "specialization": "Pulmonologist",
+        "location": "Indore",
+        "address": "567, Sunflower Street, Indore, India",
+        "phone": "+91-98765-43244"
+    },
+    {
+        "name": "Dr. Nidhi Jain",
+        "specialization": "Nephrologist",
+        "location": "Jaipur",
+        "address": "876, Maple Drive, Jaipur, India",
+        "phone": "+91-98765-43245"
+    },
+    {
+        "name": "Dr. Deepak Patel",
+        "specialization": "Dentist",
+        "location": "Surat",
+        "address": "345, Spring Street, Surat, India",
+        "phone": "+91-98765-43246"
+    },
+    {
+        "name": "Dr. Aarti Gupta",
+        "specialization": "Gastroenterologist",
+        "location": "Indore",
+        "address": "789, Forest Road, Indore, India",
+        "phone": "+91-98765-43247"
+    },
+    {
+        "name": "Dr. Arjun Sharma",
+        "specialization": "Otolaryngologist",
+        "location": "Jaipur",
+        "address": "987, Oak Street, Jaipur, India",
+        "phone": "+91-98765-43248"
+    },
+    {
+        "name": "Dr. Priyanka Patel",
+        "specialization": "Neonatologist",
+        "location": "Surat",
+        "address": "234, River Road, Surat, India",
+        "phone": "+91-98765-43249"
+    },
+    {
+        "name": "Dr. Vinay Singh",
+        "specialization": "Immunologist",
+        "location": "Indore",
+        "address": "101, Sunset Boulevard, Indore, India",
+        "phone": "+91-98765-43250"
+    },
+    {
+        "name": "Dr. Rachna Gupta",
+        "specialization": "Oncologist",
+        "location": "Jaipur",
+        "address": "432, Mountain View, Jaipur, India",
+        "phone": "+91-98765-43251"
+    },
+    {
+        "name": "Dr. Rajesh Kumar",
+        "specialization": "Radiologist",
+        "location": "Surat",
+        "address": "567, Sunflower Street, Surat, India",
+        "phone": "+91-98765-43252"
+    },
+    {
+        "name": "Dr. Pooja Sharma",
+        "specialization": "Pulmonologist",
+        "location": "Indore",
+        "address": "876, Maple Drive, Indore, India",
+        "phone": "+91-98765-43253"
+    },
+    {
+        "name": "Dr. Manish Patel",
+        "specialization": "Nephrologist",
+        "location": "Jaipur",
+        "address": "345, Spring Street, Jaipur, India",
+        "phone": "+91-98765-43254"
+    },
+    {
+        "name": "Dr. Neeta Sharma",
+        "specialization": "Dentist",
+        "location": "Surat",
+        "address": "789, Forest Road, Surat, India",
+        "phone": "+91-98765-43255"
+    },
+    {
+        "name": "Dr. Anushka Singh",
+        "specialization": "Cardiologist",
+        "location": "Surat",
+        "address": "432, Pine Avenue, Surat, India",
+        "phone": "+91-98765-43256"
+    },
+    {
+        "name": "Dr. Rohit Sharma",
+        "specialization": "Dermatologist",
+        "location": "Indore",
+        "address": "789, Garden Lane, Indore, India",
+        "phone": "+91-98765-43257"
+    },
+    {
+        "name": "Dr. Ayesha Patel",
+        "specialization": "Pediatrician",
+        "location": "Jaipur",
+        "address": "123, Oak Street, Jaipur, India",
+        "phone": "+91-98765-43258"
+    },
+    {
+        "name": "Dr. Manoj Kumar",
+        "specialization": "Gynecologist",
+        "location": "Surat",
+        "address": "876, Maple Drive, Surat, India",
+        "phone": "+91-98765-43259"
+    },
+    {
+        "name": "Dr. Shruti Sharma",
+        "specialization": "Orthopedic Surgeon",
+        "location": "Indore",
+        "address": "234, Sunflower Street, Indore, India",
+        "phone": "+91-98765-43260"
+    },
+    {
+        "name": "Dr. Ashok Singh",
+        "specialization": "Neurologist",
+        "location": "Jaipur",
+        "address": "567, River Road, Jaipur, India",
+        "phone": "+91-98765-43261"
+    },
+    {
+        "name": "Dr. Tanvi Gupta",
+        "specialization": "Ophthalmologist",
+        "location": "Surat",
+        "address": "101, Spring Street, Surat, India",
+        "phone": "+91-98765-43262"
+    },
+    {
+        "name": "Dr. Vikas Patel",
+        "specialization": "ENT Specialist",
+        "location": "Indore",
+        "address": "432, Mountain View, Indore, India",
+        "phone": "+91-98765-43263"
+    },
+    {
+        "name": "Dr. Komal Mehta",
+        "specialization": "Psychiatrist",
+        "location": "Jaipur",
+        "address": "789, Forest Road, Jaipur, India",
+        "phone": "+91-98765-43264"
+    },
+    {
+        "name": "Dr. Pradeep Sharma",
+        "specialization": "Endocrinologist",
+        "location": "Surat",
+        "address": "234, Garden Lane, Surat, India",
+        "phone": "+91-98765-43265"
+    },
+    {
+        "name": "Dr. Anjali Gupta",
+        "specialization": "Allergist",
+        "location": "Indore",
+        "address": "876, Pine Avenue, Indore, India",
+        "phone": "+91-98765-43266"
+    },
+    {
+        "name": "Dr. Sandeep Singh",
+        "specialization": "Urologist",
+        "location": "Jaipur",
+        "address": "789, Oak Street, Jaipur, India",
+        "phone": "+91-98765-43267"
+    },
+    {
+        "name": "Dr. Rekha Patel",
+        "specialization": "Rheumatologist",
+        "location": "Surat",
+        "address": "345, Maple Drive, Surat, India",
+        "phone": "+91-98765-43268"
+    },
+    {
+        "name": "Dr. Parth Sharma",
+        "specialization": "Oncologist",
+        "location": "Indore",
+        "address": "987, River Road, Indore, India",
+        "phone": "+91-98765-43269"
+    },
+    {
+        "name": "Dr. Deepika Gupta",
+        "specialization": "Hematologist",
+        "location": "Jaipur",
+        "address": "654, Sunflower Street, Jaipur, India",
+        "phone": "+91-98765-43270"
+    },
+    {
+        "name": "Dr. Manoj Kumar",
+        "specialization": "Radiologist",
+        "location": "Surat",
+        "address": "321, Spring Street, Surat, India",
+        "phone": "+91-98765-43271"
+    },
+    {
+        "name": "Dr. Akanksha Singh",
+        "specialization": "Pulmonologist",
+        "location": "Indore",
+        "address": "789, Forest Road, Indore, India",
+        "phone": "+91-98765-43272"
+    },
+    {
+        "name": "Dr. Suresh Patel",
+        "specialization": "Nephrologist",
+        "location": "Jaipur",
+        "address": "123, Garden Lane, Jaipur, India",
+        "phone": "+91-98765-43273"
+    },
+    {
+        "name": "Dr. Priya Verma",
+        "specialization": "Dentist",
+        "location": "Surat",
+        "address": "876, Pine Avenue, Surat, India",
+        "phone": "+91-98765-43274"
+    },
+    {
+        "name": "Dr. Arvind Sharma",
+        "specialization": "Gastroenterologist",
+        "location": "Indore",
+        "address": "432, Maple Drive, Indore, India",
+        "phone": "+91-98765-43275"
+    },
+    {
+        "name": "Dr. Meenakshi Patel",
+        "specialization": "Otolaryngologist",
+        "location": "Jaipur",
+        "address": "101, River Road, Jaipur, India",
+        "phone": "+91-98765-43276"
+    },
+    {
+        "name": "Dr. Varun Gupta",
+        "specialization": "Neonatologist",
+        "location": "Surat",
+        "address": "234, Sunflower Street, Surat, India",
+        "phone": "+91-98765-43277"
+    },
+    {
+        "name": "Dr. Poonam Sharma",
+        "specialization": "Immunologist",
+        "location": "Indore",
+        "address": "567, Spring Street, Indore, India",
+        "phone": "+91-98765-43278"
+    },
+    {
+        "name": "Dr. Ashish Singh",
+        "specialization": "Oncologist",
+        "location": "Jaipur",
+        "address": "789, Forest Road, Jaipur, India",
+        "phone": "+91-98765-43279"
+    },
+    {
+        "name": "Dr. Priyanka Gupta",
+        "specialization": "Radiologist",
+        "location": "Surat",
+        "address": "876, Garden Lane, Surat, India",
+        "phone": "+91-98765-43280"
+    },
+    {
+        "name": "Dr. Aditya Patel",
+        "specialization": "Pulmonologist",
+        "location": "Indore",
+        "address": "123, Pine Avenue, Indore, India",
+        "phone": "+91-98765-43281"
+    },
+    {
+        "name": "Dr. Nisha Sharma",
+        "specialization": "Nephrologist",
+        "location": "Jaipur",
+        "address": "432, Maple Drive, Jaipur, India",
+        "phone": "+91-98765-43282"
+    },
+    {
+        "name": "Dr. Rahul Verma",
+        "specialization": "Dentist",
+        "location": "Surat",
+        "address": "101, River Road, Surat, India",
+        "phone": "+91-98765-43283"
+    },
+    {
+        "name": "Dr. Shweta Gupta",
+        "specialization": "Gastroenterologist",
+        "location": "Indore",
+        "address": "234, Sunflower Street, Indore, India",
+        "phone": "+91-98765-43284"
+    },
+    {
+        "name": "Dr. Ramesh Patel",
+        "specialization": "Otolaryngologist",
+        "location": "Jaipur",
+        "address": "567, Spring Street, Jaipur, India",
+        "phone": "+91-98765-43285"
+    },
+    {
+        "name": "Dr. Priya Sharma",
+        "specialization": "Neonatologist",
+        "location": "Surat",
+        "address": "876, Forest Road, Surat, India",
+        "phone": "+91-98765-43286"
+    },
+    {
+        "name": "Dr. Rohan Gupta",
+        "specialization": "Immunologist",
+        "location": "Indore",
+        "address": "123, Garden Lane, Indore, India",
+        "phone": "+91-98765-43287"
+    },
+    {
+        "name": "Dr. Ananya Singh",
+        "specialization": "Oncologist",
+        "location": "Jaipur",
+        "address": "432, Maple Drive, Jaipur, India",
+        "phone": "+91-98765-43288"
+    },
+    {
+        "name": "Dr. Akash Sharma",
+        "specialization": "Radiologist",
+        "location": "Surat",
+        "address": "789, Sunflower Street, Surat, India",
+        "phone": "+91-98765-43289"
+    },
+    {
+        "name": "Dr. Sonal Patel",
+        "specialization": "Pulmonologist",
+        "location": "Indore",
+        "address": "101, River Road, Indore, India",
+        "phone": "+91-98765-43290"
+    },
+    {
+        "name": "Dr. Mohit Gupta",
+        "specialization": "Nephrologist",
+        "location": "Jaipur",
+        "address": "876, Forest Road, Jaipur, India",
+        "phone": "+91-98765-43291"
+    },
+    {
+        "name": "Dr. Shreya Singh",
+        "specialization": "Dentist",
+        "location": "Surat",
+        "address": "234, Garden Lane, Surat, India",
+        "phone": "+91-98765-43292"
+    },
+    {
+        "name": "Dr. Surya Sharma",
+        "specialization": "Gastroenterologist",
+        "location": "Indore",
+        "address": "432, Maple Drive, Indore, India",
+        "phone": "+91-98765-43293"
+    },
+    {
+        "name": "Dr. Aarav Patel",
+        "specialization": "Otolaryngologist",
+        "location": "Jaipur",
+        "address": "789, Sunflower Street, Jaipur, India",
+        "phone": "+91-98765-43294"
+    },
+    {
+        "name": "Dr. Neha Verma",
+        "specialization": "Neonatologist",
+        "location": "Surat",
+        "address": "101, River Road, Surat, India",
+        "phone": "+91-98765-43295"
+    },
+    {
+        "name": "Dr. Rajat Gupta",
+        "specialization": "Immunologist",
+        "location": "Indore",
+        "address": "876, Forest Road, Indore, India",
+        "phone": "+91-98765-43296"
+    },
+    {
+        "name": "Dr. Ananya Singh",
+        "specialization": "Oncologist",
+        "location": "Jaipur",
+        "address": "234, Garden Lane, Jaipur, India",
+        "phone": "+91-98765-43297"
+    },
+    {
+        "name": "Dr. Akash Sharma",
+        "specialization": "Radiologist",
+        "location": "Surat",
+        "address": "567, Maple Drive, Surat, India",
+        "phone": "+91-98765-43298"
+    },
+    {
+        "name": "Dr. Sonal Patel",
+        "specialization": "Pulmonologist",
+        "location": "Indore",
+        "address": "789, Sunflower Street, Indore, India",
+        "phone": "+91-98765-43299"
+    },
+    {
+        "name": "Dr. Mohit Gupta",
+        "specialization": "Nephrologist",
+        "location": "Jaipur",
+        "address": "876, Forest Road, Jaipur, India",
+        "phone": "+91-98765-43300"
+    }
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+function solve() {
+    let table = document.createElement('table');
+    table.classList.add('doctor-table');
+    
+    let headerRow = table.insertRow();
+    let nameHeader = headerRow.insertCell(0);
+    nameHeader.textContent = 'Name';
+    let addressHeader = headerRow.insertCell(1);
+    addressHeader.textContent = 'Clinic Address';
+    let phoneHeader = headerRow.insertCell(2);
+    phoneHeader.textContent = 'Phone Number';
+    
+    let ans = document.querySelector("#doctorsDiv");
+    ans.innerHTML = "";
+    
+    let l = document.querySelector("#location").value;
+    let s = document.querySelector("#specialization").value;
+    
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i].location === l && arr[i].specialization === s) {
+            let row = table.insertRow();
+            let nameCell = row.insertCell(0);
+            nameCell.textContent = arr[i].name;
+            let addressCell = row.insertCell(1);
+            addressCell.textContent = arr[i].address;
+            let phoneCell = row.insertCell(2);
+            phoneCell.textContent = arr[i].phone;
+        }
+    }
+    
+    ans.appendChild(table);
+}
+
+
+
+    </script> 
+</body>
+</html>

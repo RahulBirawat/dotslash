@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+   
+    <style>
+
+        body{
+            background-image: linear-gradient(#0092c246,#00b39b48),url('https://img.freepik.com/free-vector/clean-medical-background_53876-97927.jpg?size=626&ext=jpg&ga=GA1.1.1505290779.1706392770&semt=ais');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            min-height: 75vh;
+        }
+        
+        .floating {  
+            animation-name: floating;
+            animation-duration: 3s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+            margin-left: 30px;
+            margin-top: 5px;
+            box-shadow:  11px 11px 22px #1f847dcb;
+        }
+        
+        @keyframes floating {
+            0% { transform: translate(0,  0px); }
+            50%  { transform: translate(0, 15px); }
+            100%   { transform: translate(0, -0px); }    
+        }
+        .hiddenEle{
+            opacity:0;
+            transform:translateX(-50%);
+            transition: all 1s;
+            transition-delay: 50ms;
+        }
+        .showEle{
+            opacity:1;
+            transform:translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <div align="center">
+        <h1 style="color: white;font-size: 80px; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;margin-top: 200px;margin-bottom: 100px;" class="hiddenEle">
+            Multi Disease Prediction Calculator
+        </h1>
+        <form action="predict">
+            <input type="submit" value="Let's Get started" style="padding: 16px 24px;font-size: 36px;border-radius: 24px;border: 0;cursor: pointer;font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;" class="floating hiddenEle">
+        </form>
+    </div>
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            console.log(entry)
+            if(entry.isIntersecting){
+                entry.target.classList.add('showEle');
+            }
+            else{
+                entry.target.classList.remove('showEle');
+            }
+            
+        })
+    })
+
+    const hiddenElements= document.querySelectorAll('.hiddenEle');
+    hiddenElements.forEach((el) => observer.observe(el));
+
+    </script>
+</body>
+</html>

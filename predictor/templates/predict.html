@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        body{
+            background-image: linear-gradient(#0092c246,#00b39b48),url('https://img.freepik.com/free-vector/clean-medical-background_53876-97927.jpg?size=626&ext=jpg&ga=GA1.1.1505290779.1706392770&semt=ais');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            min-height: 75vh;
+        }
+        .main{
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            min-height: 100vh;
+        }
+        .left{
+            width:30%;
+            background-image: linear-gradient(#0092c246,#00b39b48);
+            /* background-color: #0086b3; */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap:36px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-height: 100vh;
+        }
+        .right{
+            position: absolute;
+            right: 0;    
+            width: 70%;
+            background-color:#ffffffa1;
+            border-radius: 10px;
+            align-items: center;
+            padding: 5%;
+        }
+        h1{
+            color: #0086b3;
+            font-size: 30px;
+            font-weight: bold;
+        }
+        input[type=submit]{
+            background-image: linear-gradient(40deg,#0091c2fb,#00b39b);
+            border: 2px;
+            color: white;
+            padding: 8px 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            border-radius: 12px;
+        }
+        .right td{
+            padding: 10px;
+        }
+
+        /* Side Nav styling */
+        .navBtn{
+            border-radius: 18px;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            width: 250px;
+            transition: ease-in 1s;
+        }
+        a{
+            text-decoration: none;
+            color: #0086b3;
+
+        }
+        input{
+            padding: 10px 20px;
+            border-radius: 24px;
+            border: 0;
+            border-bottom: 2px solid #0086b3;
+            border-right: 1px solid #0086b3;
+            background-color: rgba(226, 241, 255, 0.671);
+            transition: ease-in ;
+            transition-duration: 200ms;
+            
+        }
+        input:focus{
+            border: 2px solid #0086b3;
+            
+            outline: none;
+            transform: scale(1.05);
+            
+        }
+        #active{
+            background-color: #00a3c3;
+            border: 2px solid white;
+        }
+        #active a{
+            color:white;
+        }
+        #submitBtn:hover{
+            transform: scale(1.1);
+        }
+        .modal{
+            padding: 3em 5em;
+            max-width: 100ch;
+            border: 0;
+            border-radius: 24px;
+            line-height: 28px;
+            margin: auto;
+            box-shadow:  10px 10px 20px #00584c,
+             -10px -10px 20px #004856;
+            & > *{
+                margin: 0 0 0.5rem 0;
+            }
+        }
+        .modal::backdrop{
+            background:linear-gradient(#005e7d95,#000000b9);
+            opacity: 0.6;
+        }
+        .hiddenEle{
+            opacity:0;
+            transform:translateX(50%);
+            transition: all 1s;
+            transition-delay: 50ms;
+        }
+        .showEle{
+            opacity:1;
+            transform:translateX(0);
+        }
+    </style>
+    <title>Diabetes Predict</title>
+</head>
+<body >
+    <div class="main">
+        <div align="center" class="left">
+            <div class="navBtn">
+                <a href="../">
+                    <div>Home</div>
+                </a>
+            </div>
+            <div class="navBtn"  id="active">
+                <a href=".././predict">
+                    <div>Diabetes prediction</div>
+                </a>
+            </div>
+            <div class="navBtn" >
+                <a href=".././predict_1">
+                    <div>Heart Disease prediction</div>
+                </a>
+            </div>
+            <div class="navBtn">
+                <a href=".././predict_2">
+                    <div>Lung Cancer prediction</div>
+                </a>
+            </div>
+            <div class="navBtn">
+                <a href=".././form">
+                    <div>Doctor Recommendation</div>
+                </a>
+            </div>
+        </div>
+        <div align="center" class="right hiddenEle">
+            <h1 style="font-size: 36px;margin-bottom: 24px;">Please enter the following information:</h1>
+            <form action="result">
+                <table style="font-weight: 700;font-size: 18px;">
+                    <tr>
+                        <td align="right">Pregnancies: </td>
+                        <td align="left"><input type="text" name="n1" id="n1"></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Glucose: </td>
+                        <td align="left"><input type="text" name="n2" id="n2"></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Blood Pressure: </td>
+                        <td align="left"><input type="text" name="n3" id="n3"></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Skin Thickness: </td>
+                        <td align="left"><input type="text" name="n4" id="n4"></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Insulin: </td>
+                        <td align="left"><input type="text" name="n5" id="n5"></td>
+                    </tr>
+                    <tr>
+                        <td align="right">BMI: </td>
+                        <td align="left"><input type="text" name="n6" id="n6"></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Diabetes Pedigree function: </td>
+                        <td align="left"><input type="text" name="n7" id="n7"></td>
+                    </tr>
+                    <tr>
+                        <td align="right">Age: </td>
+                        <td align="left"><input type="text" name="n8" id="n8"></td>
+                    </tr>
+                </table>
+                <input type="submit" value="Submit" style="font-size: 20px;" id="submitBtn">
+            </form>
+            <br>
+            <span id="res"> {{result2}}</span>
+            
+        </div>
+
+        
+    </div>
+
+    <dialog class="posi modal">
+        <div style="text-align: center;font-size: 36px;">Result:  {{result2}}</div>
+        <div>
+            <h1 style="margin: 40px 0 32px;">Recommendations</h1>
+            <ul>
+                <li><b>Monitor Blood Sugar Levels Regularly:</b>
+                    Consistently check your blood sugar levels as recommended by your healthcare provider to ensure you are within your target range.</li>
+                <li>
+                    <b>Balanced Diet:</b>Adopt a balanced diet rich in fruits, vegetables, lean proteins, and whole grains. Limit the intake of processed foods, sugary snacks, and high-carb meals.
+                </li>
+                <li>
+                    <b>Regular Exercise:</b>
+                    Engage in regular physical activity to help manage blood sugar levels. Consult with your healthcare team to determine a suitable exercise routine.
+                </li>
+                <li>
+                    <b>Stay Hydrated:</b>
+                    Drink plenty of water throughout the day to stay hydrated. Avoid sugary drinks and sodas, opting for water, herbal teas, or infused water.
+                </li>
+                <li>
+                    <b>Medication Adherence:</b>
+                    Take prescribed medications as directed by your healthcare provider. Follow the recommended dosage and timing to effectively manage your diabetes.
+ 
+                </li>
+            </ul>
+        </div>
+        <div style="text-align: center;"><a href=".././predict">Close</a></div>
+    </dialog>
+    <dialog class="negi modal">
+        <div style="text-align: center;font-size: 36px;">Result:  {{result2}}</div>
+        <div>
+            <h1 style="margin: 40px 0 32px;">Recommendations</h1>
+            <ul>
+                <li><b>Maintain a Balanced Diet:</b>
+                    Adopt a well-balanced diet with a variety of nutrient-rich foods, emphasizing fruits, vegetables, whole grains, lean proteins, and healthy fats.</li>
+                <li>
+                    <b>Regular Physical Activity:</b>Engage in regular exercise to promote overall health and prevent the onset of conditions like diabetes. Aim for at least 150 minutes of moderate-intensity exercise per week.
+                </li>
+                <li>
+                    <b>Limit Processed Foods and Sugars:</b>
+                    Reduce the intake of processed foods, sugary snacks, and sweetened beverages to maintain a healthy weight and lower the risk of developing diabetes.
+                </li>
+                <li>
+                    <b>Routine Health Check-ups:</b>
+                    Schedule regular health check-ups to monitor your overall health. This includes cholesterol levels, blood pressure, and blood sugar, even if you are not diabetic.
+                </li>
+                <li>
+                    <b>Stay Hydrated and Mindful Eating:</b>
+                    Drink an adequate amount of water daily and practice mindful eating. Pay attention to portion sizes and listen to your body's hunger and fullness cues to avoid overeating.
+ 
+                </li>
+            </ul>
+        </div>
+        <div style="text-align: center;"><a href=".././predict">Close</a></div>
+    </dilog>
+    <script>
+        let res = document.getElementById('res').innerText;
+        console.log(res);
+        posi = document.querySelector('.posi')
+        negi = document.querySelector('.negi')
+        if(res == 'Positive'){
+            console.log('pos');
+            posi.showModal()
+            
+        }else if(res == 'Negative'){
+            console.log('neg');
+            negi.showModal()
+        }
+
+        //animation
+        const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            console.log(entry)
+            if(entry.isIntersecting){
+                entry.target.classList.add('showEle');
+            }
+            else{
+                entry.target.classList.remove('showEle');
+            }
+            
+            })
+        })
+
+        const hiddenElements= document.querySelectorAll('.hiddenEle');
+        hiddenElements.forEach((el) => observer.observe(el));
+    </script>
+    
+</body>
+</html>

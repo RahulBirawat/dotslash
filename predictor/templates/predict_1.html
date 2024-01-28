@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        body{
+            background-image: linear-gradient(#0092c246,#00b39b48),url('https://img.freepik.com/free-vector/clean-medical-background_53876-97927.jpg?size=626&ext=jpg&ga=GA1.1.1505290779.1706392770&semt=ais');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            min-height: 75vh;
+        }
+        .main{
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            min-height: 100vh;
+        }
+        .left{
+            width:30%;
+            background-image: linear-gradient(#0092c246,#00b39b48);
+            /* background-color: #0086b3; */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap:36px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-height: 100vh;
+        }
+        .right{
+            position: absolute;
+            right: 0;    
+            width: 70%;
+            background-color:#ffffffa1;
+            
+            border-radius: 10px;
+            align-items: center;
+            padding:  5%;
+        }
+        h1{
+            color: #0086b3;
+            font-size: 30px;
+            font-weight: bold;
+        }
+        input[type=submit]{
+            background-image: linear-gradient(40deg,#0091c2fb,#00b39b);
+            border: 2px;
+            color: white;
+            padding: 8px 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            border-radius: 12px;
+        }
+        .right td{
+            padding: 10px;
+        }
+
+        /* Side Nav styling */
+        .navBtn{
+            border-radius: 18px;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            width: 250px;
+        }
+        a{
+            text-decoration: none;
+            color: #0086b3;
+
+        }
+        input{
+            padding: 10px 20px;
+            border-radius: 24px;
+            border: 0;
+            width:100px;
+            border-bottom: 2px solid #0086b3;
+            border-right: 1px solid #0086b3;
+            background-color: rgba(226, 241, 255, 0.671);
+            transition: ease-in ;
+            transition-duration: 200ms;
+            
+        }
+        input:focus{
+            border: 2px solid #0086b3;
+            
+            outline: none;
+            transform: scale(1.05);
+            
+        }
+        #active{
+            background-color: #00a3c3;
+            border: 2px solid white;
+        }
+        #active a{
+            color:white;
+        }
+        #submitBtn:hover{
+            transform: scale(1.1);
+        }
+        .modal{
+            padding: 3em 5em;
+            max-width: 100ch;
+            border: 0;
+            border-radius: 24px;
+            line-height: 28px;
+            margin: auto;
+            box-shadow:  10px 10px 20px #00584c,
+             -10px -10px 20px #004856;
+            & > *{
+                margin: 0 0 0.5rem 0;
+            }
+        }
+        .modal::backdrop{
+            background:linear-gradient(#005e7d95,#000000b9);
+            opacity: 0.6;
+        }
+        .hiddenEle{
+            opacity:0;
+            transform:translateX(50%);
+            transition: all 1s;
+            transition-delay: 50ms;
+        }
+        .showEle{
+            opacity:1;
+            transform:translateX(0);
+        }
+        
+        
+    </style>
+    <title>Lung Cancer Predict</title>
+</head>
+<body>
+    <div class="main">
+        <div align="center" class="left">
+            <div class="navBtn">
+                <a href="../">
+                    <div>Home</div>
+                </a>
+            </div>
+            <div class="navBtn">
+                <a href=".././predict">
+                    <div>Diabetes prediction</div>
+                </a>
+            </div>
+            <div class="navBtn" id="active">
+                <a href=".././predict_1">
+                    <div>Heart Disease prediction</div>
+                </a>
+            </div>
+            <div class="navBtn">
+                <a href=".././predict_2">
+                    <div>Lung Cancer prediction</div>
+                </a>
+            </div>
+            <div class="navBtn">
+                <a href=".././form">
+                    <div>Doctor Recommendation</div>
+                </a>
+            </div>
+        </div>
+        <div align="center" class="right hiddenEle">
+            <h1 style="font-size: 36px;margin-bottom: 24px;">Please enter the following information:</h1>
+            <form action="result_1">
+                								
+                <table style="font-weight: 700;font-size: 18px;border-spacing: 16px;">
+                    <tr>
+                        <td align="right">Age: </td>
+                        <td align="left"><input type="text" name="n1" id="n1"></td>
+                        <td align="right">Gender(M=0/F=1): </td>
+                        <td align="left"><input type="text" name="n2" id="n2"></td>
+                    </tr>
+                    
+                    <tr>
+                        <td align="right">Chest Pain type(4 values): </td>
+                        <td align="left"><input type="text" name="n3" id="n3"></td>
+                        <td align="right">Resting BP: </td>
+                        <td align="left"><input type="text" name="n4" id="n4"></td>
+                    </tr>
+                    
+                    <tr>
+                        
+                        <td align="right">Serum cholestoral in mg/dl: </td>
+                        <td align="left"><input type="text" name="n5" id="n5"></td>
+                        <td align="right">Fasting blood sugar: </td>
+                        <td align="left"><input type="text" name="n6" id="n6"></td>
+                        
+                    </tr>
+                    
+                    <tr>
+                        <td align="right">Resting electrocardiographic results (values 0,1,2): </td>
+                        <td align="left"><input type="text" name="n7" id="n7"></td>
+                        <td align="right">Maximum heart rate achieved: </td>
+                        <td align="left"><input type="text" name="n8" id="n8"></td>
+                    </tr>
+                    
+                    <tr>
+                        <td align="right">Exercise induced angina: </td>
+                        <td align="left"><input type="text" name="n9" id="n9"></td>
+                        <td align="right">Oldpeak = ST depression induced by exercise relative to rest: </td>
+                        <td align="left"><input type="text" name="n10" id="n10"></td>
+                        
+                    </tr>
+                    
+                    <tr>
+                        <td align="right">The slope of the peak exercise ST segment: </td>
+                        <td align="left"><input type="text" name="n11" id="n11"></td>
+                        <td align="right">Number of major vessels (0-3) colored by flourosopy: </td>
+                        <td align="left"><input type="text" name="n12" id="n12"></td>
+                        
+                    </tr>
+                    
+                </table>
+                <input type="submit" value="Submit" style="font-size: 20px;" id="submitBtn">
+            </form>
+
+
+            <span id="res"> {{result2}}</span>
+        </div>
+    </div>
+    <dialog class="normal modal">
+        <div style="text-align: center;font-size: 36px;">Result:  {{result2}}</div>
+        <div>
+            <h1 style="margin: 40px 0 32px;">Recommendations</h1>
+            <ul>
+                
+                <li><b>Regular Exercise Routine:</b> Engage in regular aerobic exercises, such as brisk walking, swimming, or cycling, to support overall cardiovascular health and maintain a strong heart.</li>
+                <li><b>Heart-Healthy Diet:</b> 
+                    Follow a balanced diet rich in fruits, vegetables, whole grains, lean proteins, and healthy fats. Limit saturated and trans fats, as well as sodium, to promote heart health.</li>
+                <li><b>Routine Check-ups:</b> 
+                    Schedule regular check-ups with your healthcare provider to monitor your blood pressure, cholesterol levels, and overall heart health, even if you don't have a known heart condition.  </li>
+            </ul>
+        </div>
+        <div style="text-align: center;"><a href=".././predict_1">Close</a></div>
+    </dialog>
+    
+
+
+
+
+
+    <dialog class="fixed modal">
+        <div style="text-align: center;font-size: 36px;">Result:  {{result2}}</div>
+        <div>
+            <h1 style="margin: 40px 0 32px;">Recommendations</h1>
+            <ul>
+                
+                <li><b>Follow Medical Advice:</b> 
+                    Adhere to the treatment plan and medications prescribed by your healthcare team. Regularly attend follow-up appointments and diagnostic tests to monitor the fixed heart defect.</li>
+                <li><b>
+                    Lifestyle Modifications:</b>Make necessary lifestyle changes to accommodate the fixed heart defect. This may include dietary modifications, exercise restrictions, and other recommendations provided by your healthcare provider.</li>
+                <li><b>Emotional Support:</b> 
+                    Seek emotional support from healthcare professionals, support groups, or friends and family to cope with the challenges associated with a fixed heart defect. Mental well-being is crucial in managing chronic conditions.  </li>
+            </ul>
+        </div>
+        </div>
+        <div style="text-align: center;"><a href=".././predict_1">Close</a></div>
+    </dialog>
+    <dialog class="rev modal">
+        <div style="text-align: center;font-size: 36px;">Result:  {{result2}}</div>
+        <div>
+            <h1 style="margin: 40px 0 32px;">Recommendations</h1>
+            <ul>
+                
+                <li><b>Lifestyle Modifications:</b> 
+                    Implement lifestyle changes recommended by your healthcare provider, such as adopting a heart-healthy diet, engaging in regular exercise, and managing stress to address and potentially reverse the heart defect.</li>
+                <li><b>
+                    Medication Adherence:</b>Take prescribed medications consistently as directed by your healthcare team. Follow the recommended treatment plan to improve heart function and address the reversible heart defect.</li>
+                <li><b>Regular Monitoring:</b> 
+                    Undergo regular medical check-ups and diagnostic tests to monitor progress and adjust the treatment plan as needed. Regular monitoring is essential in assessing the reversibility of the heart defect and adjusting interventions accordingly.</li>
+            </ul>
+        </div>
+        <div style="text-align: center;"><a href=".././predict_1">Close</a></div>
+    </dialog>
+    <script>
+        let res = document.getElementById('res').innerText;
+        console.log(res);
+        norm = document.querySelector('.normal')
+        fixed = document.querySelector('.fixed')
+        rev = document.querySelector('.rev')
+        if(res == 'Normal Heart'){
+            console.log('pos');
+            norm.showModal()
+            
+        }else if(res == 'Fixed Heart Defect'){
+            console.log('fix');
+           fixed.showModal()
+        }
+        else if(res == 'Reversable Heart Defect'){
+            console.log('rev');
+           rev.showModal()
+        }
+        //animation
+        const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            console.log(entry)
+            if(entry.isIntersecting){
+                entry.target.classList.add('showEle');
+            }
+            else{
+                entry.target.classList.remove('showEle');
+            }
+            
+            })
+        })
+
+        const hiddenElements= document.querySelectorAll('.hiddenEle');
+        hiddenElements.forEach((el) => observer.observe(el));
+    </script>
+</body>
+</html>

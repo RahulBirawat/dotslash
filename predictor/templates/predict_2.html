@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        body{
+            background-image: linear-gradient(#0092c246,#00b39b48),url('https://img.freepik.com/free-vector/clean-medical-background_53876-97927.jpg?size=626&ext=jpg&ga=GA1.1.1505290779.1706392770&semt=ais');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            min-height: 75vh;
+            overflow-y: hidden;
+        }
+        .main{
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            min-height: 100vh;
+        }
+        .left{
+            width:30%;
+            background-image: linear-gradient(#0092c246,#00b39b48);
+            /* background-color: #0086b3; */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap:36px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-height: 100vh;
+        }
+        .right{
+            position: absolute;
+            right: 0;    
+            width: 70%;
+            background-color:#ffffffa1;
+            border-radius: 10px;
+            align-items: center;
+            padding: 5%;
+        }
+        h1{
+            color: #0086b3;
+            font-size: 30px;
+            font-weight: bold;
+        }
+        input[type=submit]{
+            background-image: linear-gradient(40deg,#0091c2fb,#00b39b);
+            border: 2px;
+            color: white;
+            padding: 8px 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            border-radius: 12px;
+        }
+        .right td{
+            padding: 10px;
+        }
+
+        /* Side Nav styling */
+        .navBtn{
+            border-radius: 18px;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            width: 250px;
+        }
+        a{
+            text-decoration: none;
+            color: #0086b3;
+
+        }
+        input{
+            padding: 10px 20px;
+            border-radius: 24px;
+            border: 0;
+            border-bottom: 2px solid #0086b3;
+            border-right: 1px solid #0086b3;
+            background-color: rgba(226, 241, 255, 0.671);
+            transition: ease-in ;
+            transition-duration: 200ms;
+            
+        }
+        input:focus{
+            border: 2px solid #0086b3;
+            
+            outline: none;
+            transform: scale(1.05);
+            
+        }
+        #active{
+            background-color: #00a3c3;
+            border: 2px solid white;
+        }
+        #active a{
+            color:white;
+        }
+        #submitBtn:hover{
+            transform: scale(1.1);
+        }
+        .box{
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap:2rem;
+            font-weight:bolder;
+            width:60%;
+            min-height: 100vh;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+            margin:auto 50px;
+            border-radius:30px;
+            
+        }
+        
+        #ress{
+            font-size:2rem;
+            font-weight:bolder;
+        }
+        #box ul{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap:2rem;
+            width:70%;
+        }
+        .modal{
+            padding: 3em 5em;
+            max-width: 100ch;
+            border: 0;
+            border-radius: 24px;
+            line-height: 28px;
+            margin: auto;
+            box-shadow:  10px 10px 20px #00584c,
+             -10px -10px 20px #004856;
+            & > *{
+                margin: 0 0 0.5rem 0;
+            }
+        }
+        .modal::backdrop{
+            background:linear-gradient(#005e7d95,#000000b9);
+            opacity: 0.6;
+        }
+        .hiddenEle{
+            opacity:0;
+            transform:translateX(50%);
+            transition: all 1s;
+            transition-delay: 50ms;
+        }
+        .showEle{
+            opacity:1;
+            transform:translateX(0);
+        }
+    </style>
+    <title>Lung Cancer Predict</title>
+</head>
+<body>
+    <div class="main">
+        <div align="center" class="left">
+            <div class="navBtn">
+                <a href="../">
+                    <div>Home</div>
+                </a>
+            </div>
+            <div class="navBtn" >
+                <a href=".././predict">
+                    <div>Diabetes prediction</div>
+                </a>
+            </div>
+            <div class="navBtn" >
+                <a href=".././predict_1">
+                    <div>Heart Disease prediction</div>
+                </a>
+            </div>
+            <div class="navBtn" id="active">
+                <a href=".././predict_2">
+                    <div>Lung Cancer prediction</div>
+                </a>
+            </div>
+            <div class="navBtn">
+                <a href=".././form">
+                    <div>Doctor Recommendation</div>
+                </a>
+            </div>
+        </div>
+        <div align="center" class="right hiddenEle">
+            <h1 style="font-size: 36px;margin-bottom: 24px;">Please enter the following information:</h1>
+            <form action="result_2">
+                								
+                <table style="font-weight: 700;font-size: 18px;border-spacing: 24px;">
+                    <tr>
+                        <td align="right">Age: </td>
+                        <td align="left"><input type="text" name="n1" id="n1"></td>
+                        <td align="right">Gender(M=1/F=2): </td>
+                        <td align="left"><input type="text" name="n2" id="n2"></td>
+                    </tr>
+                    
+                    <tr>
+                        <td align="right">Air Pollution: </td>
+                        <td align="left"><input type="text" name="n3" id="n3"></td>
+                        <td align="right">Dust Allergy: </td>
+                        <td align="left"><input type="text" name="n4" id="n4"></td>
+                    </tr>
+                    
+                    <tr>
+                        
+                        <td align="right">Genetic Risk: </td>
+                        <td align="left"><input type="text" name="n5" id="n5"></td>
+                        <td align="right">Chronic Lung Disease: </td>
+                        <td align="left"><input type="text" name="n6" id="n6"></td>
+                        
+                    </tr>
+                    
+                    <tr>
+                        <td align="right">Smoking: </td>
+                        <td align="left"><input type="text" name="n7" id="n7"></td>
+                        <td align="right">Chest Pain: </td>
+                        <td align="left"><input type="text" name="n8" id="n8"></td>
+                    </tr>
+                    
+                    <tr>
+                        <td align="right">Coughing of blood: </td>
+                        <td align="left"><input type="text" name="n9" id="n9"></td>
+                        <td align="right">Shortness of Breath: </td>
+                        <td align="left"><input type="text" name="n10" id="n10"></td>
+                        
+                    </tr>
+                    
+                    <tr>
+                        <td align="right">Swallowing Difficulty: </td>
+                        <td align="left"><input type="text" name="n11" id="n11"></td>
+                        <td align="right">Frequent Cold: </td>
+                        <td align="left"><input type="text" name="n12" id="n12"></td>
+                        
+                    </tr>
+                    
+                </table>
+                <input type="submit" value="Submit" style="font-size: 20px;" id="submitBtn" >
+            </form>
+            <span id="res"> {{result2}}</span>
+        </div>
+    </div>
+    <dialog class="low modal">
+        <div style="text-align: center;font-size: 36px;">Result:  {{result2}}</div>
+        <div>
+            <h1 style="margin: 40px 0 32px;">Recommendations</h1>
+            <ul>
+                <li>Surgery: Surgery is often the preferred treatment for early-stage lung cancer where the tumor is localized and hasn't spread extensively. It involves removing the tumor and possibly nearby lymph node</li>
+                <li>Radiation Therapy: Radiation therapy may be used as an alternative or adjuvant to surgery, especially for patients who are not eligible for surgery.</li>
+                <li>Chemotherapy: In some cases, chemotherapy may be recommended before or after surgery to reduce the size of the tumor or to destroy any remaining cancer cells.</li>
+            </ul>
+        </div>
+        <div style="text-align: center;"><a href=".././predict_2">Close</a></div>
+    </dialog>
+    <dialog class="medium modal">
+        <div style="text-align: center;font-size: 36px;">Result:  {{result2}}</div>
+        <div>
+            <h1 style="margin: 40px 0 32px;">Recommendations</h1>
+            <ul>
+                <li>Combination Therapy: Treatment for medium-stage lung cancer often involves a combination of surgery, radiation therapy, and chemotherapy.</li>
+                <li>Targeted Therapy: Targeted therapy drugs may be used to attack specific mutations or abnormalities in cancer cells, particularly for non-small cell lung cancer (NSCLC).</li>
+                <li>Immunotherapy: Immunotherapy drugs help the body's immune system recognize and attack cancer cells. They may be used alone or in combination with other treatments.</li>
+            </ul>
+        </div>
+        <div style="text-align: center;"><a href=".././predict_2">Close</a></div>
+    </dialog>
+    <dialog class="high modal">
+        <div style="text-align: center;font-size: 36px;">Result:  {{result2}}</div>
+        <div>
+            <h1 style="margin: 40px 0 32px;">Recommendations</h1>
+            <ul>
+                <li>Systemic Therapy: Treatment for advanced lung cancer typically focuses on systemic therapies such as chemotherapy, targeted therapy, and immunotherapy. These treatments aim to slow the growth of cancer, relieve symptoms, and improve quality of life.</li>
+                <li>Palliative Care: Palliative care focuses on relieving symptoms and improving the quality of life for patients with advanced lung cancer. It may include pain management, symptom control, and emotional support.</li>
+                <li>Clinical Trials: Participation in clinical trials may offer access to experimental treatments and therapies that are not yet widely available. Clinical trials can provide valuable options for patients with advanced lung cancer.</li>
+            </ul>
+        </div>
+        <div style="text-align: center;"><a href=".././predict_2">Close</a></div>
+    </dialog>
+
+
+    <script>
+        let res = document.getElementById('res').innerText;
+        console.log(res);
+        low = document.querySelector('.low')
+        medium = document.querySelector('.medium')
+        high = document.querySelector('.high')
+        if(res == 'Low'){
+            console.log('low');
+            low.showModal()  
+        }else if(res == 'Medium'){
+            console.log('med');
+            medium.showModal()
+        }else if(res == 'High'){
+            console.log('high');
+            high.showModal()
+        }
+
+const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            console.log(entry)
+            if(entry.isIntersecting){
+                entry.target.classList.add('showEle');
+            }
+            else{
+                entry.target.classList.remove('showEle');
+            }
+            
+            })
+        })
+
+        const hiddenElements= document.querySelectorAll('.hiddenEle');
+        hiddenElements.forEach((el) => observer.observe(el));
+    </script>
+    
+</body>
+</html>
